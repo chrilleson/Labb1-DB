@@ -21,11 +21,15 @@ namespace Labb1_DB
     /// </summary>
     public partial class MainWindow : Window
     {
+       
+
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            SqlConnection conn = new SqlConnection(@"Data Source = (localdb)\MSSQLLocalDB; Initial Catalog = Labb1 - DB; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False");
+        private void TabellAUtvald_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
         }
     }
 }

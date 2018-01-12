@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <ListBox x:Name="TabellAUtvald" HorizontalAlignment="Left" Height="100" Margin="10,187,0,0" VerticalAlignment="Top" Width="100"/>
+        <ListBox x:Name="TabellAUtvald" HorizontalAlignment="Left" Height="100" Margin="10,187,0,0" VerticalAlignment="Top" Width="100" SelectionChanged="TabellAUtvald_SelectionChanged"/>
         <ListBox x:Name="TabellBUtvald" HorizontalAlignment="Left" Height="100" Margin="146,187,0,0" VerticalAlignment="Top" Width="100"/>
         <TextBox x:Name="TextBoxAllinfoA" HorizontalAlignment="Left" Height="100" Margin="277,187,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="105"/>
         <TextBox x:Name="TextBoxAllinfoB" HorizontalAlignment="Left" Height="100" Margin="388,187,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
@@ -15,6 +15,8 @@
         <Button x:Name="ButtonBoxBSpara" Content="Spara" HorizontalAlignment="Left" Margin="410,118,0,0" VerticalAlignment="Top" Width="75"/>
         <Button x:Name="ButtonBoxATaBort" Content="Ta Bort" HorizontalAlignment="Left" Margin="292,142,0,0" VerticalAlignment="Top" Width="75"/>
         <Button x:Name="ButtonBoxBTaBort" Content="Ta Bort" HorizontalAlignment="Left" Margin="410,142,0,0" VerticalAlignment="Top" Width="75"/>
+        <Label x:Name="lblDBComp" Content="Companies" HorizontalAlignment="Left" Height="28" Margin="10,144,0,0" VerticalAlignment="Top" Width="83"/>
+        <Label x:Name="lblDBGames" Content="Games" HorizontalAlignment="Left" Height="28" Margin="146,144,0,0" VerticalAlignment="Top" Width="73"/>
 
     </Grid>
 </Window>
