@@ -5,18 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Labb1_DB"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <ListBox x:Name="TabellAUtvald" HorizontalAlignment="Left" Height="100" Margin="10,187,0,0" VerticalAlignment="Top" Width="100" SelectionChanged="TabellAUtvald_SelectionChanged"/>
-        <ListBox x:Name="TabellBUtvald" HorizontalAlignment="Left" Height="100" Margin="146,187,0,0" VerticalAlignment="Top" Width="100"/>
-        <TextBox x:Name="TextBoxAllinfoA" HorizontalAlignment="Left" Height="100" Margin="277,187,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="105"/>
-        <TextBox x:Name="TextBoxAllinfoB" HorizontalAlignment="Left" Height="100" Margin="388,187,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="ButtonBoxASpara" Content="Spara" HorizontalAlignment="Left" Margin="292,118,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="ButtonBoxBSpara" Content="Spara" HorizontalAlignment="Left" Margin="410,118,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="ButtonBoxATaBort" Content="Ta Bort" HorizontalAlignment="Left" Margin="292,142,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="ButtonBoxBTaBort" Content="Ta Bort" HorizontalAlignment="Left" Margin="410,142,0,0" VerticalAlignment="Top" Width="75"/>
-        <Label x:Name="lblDBComp" Content="Companies" HorizontalAlignment="Left" Height="28" Margin="10,144,0,0" VerticalAlignment="Top" Width="83"/>
-        <Label x:Name="lblDBGames" Content="Games" HorizontalAlignment="Left" Height="28" Margin="146,144,0,0" VerticalAlignment="Top" Width="73"/>
+        Title="MainWindow" Height="575" Width="275">
+    <Grid Margin="0,0,0,-5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="126*"/>
+            <ColumnDefinition Width="391*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox x:Name="tblComapnies" Height="153" Margin="10,38,157,0" VerticalAlignment="Top"  Grid.ColumnSpan="2"/>
+        <ListBox x:Name="tblGames" HorizontalAlignment="Left" Height="153" Margin="83,38,0,0" VerticalAlignment="Top" Width="100" Grid.Column="1" />
+        <TextBox x:Name="txtCompanyID" Height="19" Margin="10,229,157,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="txtFKCompanyID" HorizontalAlignment="Left" Height="19" Margin="83,229,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Grid.Column="1"/>
+        <Button x:Name="btnAddCompany" Content="Add" Margin="10,417,182,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Click="btnAddCompany_Click"/>
+        <Button x:Name="btnAddGame" Content="Add" HorizontalAlignment="Left" Margin="83,417,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1"/>
+        <Button x:Name="btnDeleteCompany" Content="Delete" Margin="10,477,182,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Button x:Name="btnDeleteGame" Content="Delete" HorizontalAlignment="Left" Margin="83,477,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1"/>
+        <Label x:Name="lblDBComp" Content="Companies" Height="28" Margin="10,10,174,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblDBGames" Content="Games" HorizontalAlignment="Left" Height="28" Margin="83,10,0,0" VerticalAlignment="Top" Width="73" Grid.Column="1"/>
+        <Label x:Name="lblCompanyId" Content="CompanyID" Height="25" Margin="10,196,151,0" VerticalAlignment="Top" RenderTransformOrigin="0.434,-0.125" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblFKCompanyID" Content="Company ID" Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="83,199,0,0" VerticalAlignment="Top" Width="106"/>
+        <Label x:Name="lblCompanyName" Content="Company Name" Height="25" Margin="10,253,134,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblGameName" Content="Game Name" Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="83,254,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox x:Name="txtCompanyName" Height="20" Margin="10,284,157,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="txtGameName" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="83,284,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Width="100"/>
+        <Label x:Name="lblEstablished" Content="Established" Height="25" Margin="10,309,157,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblGenre" Content="Genre" Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="83,308,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox x:Name="txtEstablished" Height="20" Margin="10,338,157,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="txtGenre" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="83,338,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" />
+        <Label x:Name="lblGameID" Content="GameID" Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="83,363,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox x:Name="txtGameID" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="83,388,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100"/>
+        <Button x:Name="btnUpdateCompany" Content="Update" Height="20" Margin="10,447,182,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Button x:Name="btnUpdateGame" Content="Update" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="83,447,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btnClearAll" Grid.ColumnSpan="2" Content="Clear All" HorizontalAlignment="Left" Height="23" Margin="10,502,0,0" VerticalAlignment="Top" Width="213"/>
 
     </Grid>
 </Window>
