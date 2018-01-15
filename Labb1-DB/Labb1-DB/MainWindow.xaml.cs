@@ -88,7 +88,7 @@ namespace Labb1_DB
             });
         }
 
-        private void InsertGameToDB(int companyid)
+        private void InsertGameToBox(int companyid)
         {
             this.CompanyID = companyid;
             Task.Run(() =>
@@ -185,7 +185,7 @@ namespace Labb1_DB
                         Dispatcher.Invoke(() =>
                         {
                             command.Parameters.AddWithValue("@Companyname", this.txtCompanyName.Text);
-                            command.Parameters.AddWithValue("@established", this.txtEstablished.Text.ToString());
+                            command.Parameters.AddWithValue("@established", this.txtEstablished.Text);
                         });
                         command.ExecuteNonQuery();
                         MessageBox.Show("New Company has been saved!");
@@ -203,5 +203,267 @@ namespace Labb1_DB
             });
         }
 
+        private void btnUpdateCompany_Click(object sender, RoutedEventArgs e)
+        {
+            CompanyID = ((Companies)tblComapnies.SelectedItem).CompanyId;
+            Task.Run(() =>
+            {
+                using (SqlConnection connection = new SqlConnection(sqlconn))
+                {
+                    try
+                    {
+                        connection.Open();
+                        string query = "UPDATE Companies SET CompanyName = @companyname, Established = @established, WHERE CompanyID = @id";
+                        SqlCommand command = new SqlCommand(query, connection);
+                        Dispatcher.Invoke(() =>
+                        {
+                            command.Parameters.AddWithValue("@companyname", this.txtCompanyName.Text);
+                            command.Parameters.AddWithValue("@established", this.txtEstablished.Text);
+                            command.Parameters.AddWithValue("@id", CompanyID);
+                        });
+                        command.ExecuteNonQuery();
+                        MessageBox.Show("Company is updated.");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        Dispatcher.Invoke(() =>
+                        {
+                            tblComapnies.Items.Clear();
+                        });
+                        InsertCompaniesToBox();
+                    }
+                }
+            });
+        }
+
+        private void btnDeleteCompany_Click(object sender, RoutedEventArgs e)
+        {
+            CompanyID = ((Companies)tblComapnies.SelectedItem).CompanyId;
+            Task.Run(() =>
+            {
+                using (SqlConnection connection = new SqlConnection(sqlconn))
+                {
+                    try
+                    {
+                        connection.Open();
+                        string query = "DELETE FROM Companies WHERE CompanyID = @id";
+                        SqlCommand command = new SqlCommand(query, connection);
+                        Dispatcher.Invoke(() =>
+                        {
+                            command.Parameters.AddWithValue("@id", CompanyID);
+                        });
+                        command.ExecuteNonQuery();
+                        MessageBox.Show("Company deleted.");
+                        Dispatcher.Invoke(() =>
+                        {
+                            txtCompanyID.Text = "";
+                            txtCompanyName.Text = "";
+                            txtEstablished.Text = "";
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        InsertCompaniesToBox();
+                        Dispatcher.Invoke(() =>
+                        {
+                            tblComapnies.Items.Clear();
+                        });
+                    }
+                }
+            });
+
+        }
+
+        private void btnAddGame_Click(object sender, RoutedEventArgs e)
+        {
+            Task.Run(() =>
+            {
+                using (SqlConnection conn = new SqlConnection(sqlconn))
+                {
+                    try
+                    {
+                        conn.Open();
+                        string query = "INSERT INTO Games (GameName, Genre, CompanyID) VALUES (@Gamename, @genre, @companyid)";
+                        SqlCommand command = new SqlCommand(query, conn);
+                        Dispatcher.Invoke(() =>
+                        {
+                            command.Parameters.AddWithValue("@Gamename", this.txtGameName.Text);
+                            command.Parameters.AddWithValue("@genre", this.txtGenre.Text);
+                            command.Parameters.AddWithValue("@companyid", this.txtFKCompanyID.Text);
+                        });
+                        command.ExecuteNonQuery();
+                        MessageBox.Show("New Game has been saved!");
+                        Dispatcher.Invoke(() =>
+                        {
+                            tblGames.Items.Clear();
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    finally
+                    {
+                        conn.Close();
+                        InsertGameToBox(SelectedCompany);
+                        CleartxtBox();
+                    }
+                }
+            });
+        }
+
+        private void btnUpdateGame_Click(object sender, RoutedEventArgs e)
+        {
+            GameID = ((Games)tblGames.SelectedItem).Id;
+            Task.Run(() =>
+            {
+                using (SqlConnection connection = new SqlConnection(sqlconn))
+                {
+                    try
+                    {
+                        connection.Open();
+                        string query = "UPDATE Gaems SET GameName = @gamename, Genre = @genre, CompanyID = @companyid WHERE Id = @id";
+                        SqlCommand command = new SqlCommand(query, connection);
+                        Dispatcher.Invoke(() =>
+                        {
+                            command.Parameters.AddWithValue("@gamename", this.txtGameName.Text);
+                            command.Parameters.AddWithValue("@genre", this.txtGenre.Text);
+                            command.Parameters.AddWithValue("@companyid", this.txtFKCompanyID.Text);
+                            command.Parameters.AddWithValue("@id", GameID);
+                        });
+                        command.ExecuteNonQuery();
+                        MessageBox.Show("Game is updated.");
+                        Dispatcher.Invoke(() =>
+                        {
+                            tblGames.Items.Clear();
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        InsertGameToBox(SelectedCompany);
+                        CleartxtBox();
+                    }
+                }
+            });
+        }
+
+        private void btnDeleteGame_Click(object sender, RoutedEventArgs e)
+        {
+            GameID = ((Games)tblGames.SelectedItem).Id;
+            Task.Run(() =>
+            {
+                using (SqlConnection connection = new SqlConnection(sqlconn))
+                {
+                    try
+                    {
+                        connection.Open();
+                        string query = "DELETE FROM Games WHERE Id = @id";
+                        SqlCommand command = new SqlCommand(query, connection);
+                        Dispatcher.Invoke(() =>
+                        {
+                            command.Parameters.AddWithValue("@id", GameID);
+                        });
+                        command.ExecuteNonQuery();
+                        MessageBox.Show("Game deleted.");
+                        Dispatcher.Invoke(() =>
+                        {
+                            tblGames.Items.Clear();
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                        InsertGameToBox(SelectedCompany);
+                        CleartxtBox();
+                    }
+                }
+            });
+        }
+
+        private void btnClearAll_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                txtCompanyID.Text = "";
+                txtCompanyName.Text = "";
+                txtEstablished.Text = "";
+                txtFKCompanyID.Text = "";
+                txtGameID.Text = "";
+                txtGameName.Text = "";
+                txtGenre.Text = "";
+            });
+        }
+
+        private void tblComapnies_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(tblComapnies.SelectedIndex >= 0)
+            {
+                SelectedCompany = ((Companies)tblComapnies.SelectedItem).CompanyId;
+                InsertGameToBox(SelectedCompany);
+                InsertCompaniesToBox();
+                CleartxtBox();
+            }
+
+            if(tblComapnies.SelectedIndex != -1)
+            {
+                btnDeleteCompany.IsEnabled = true;
+                btnUpdateCompany.IsEnabled = true;
+                btnDeleteGame.IsEnabled = false;
+                btnUpdateGame.IsEnabled = false;
+            }
+        }
+
+        private void tblGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            InsertGameToTbl();
+            CleartxtBox();
+            if(tblGames.SelectedIndex != -1)
+            {
+                btnDeleteCompany.IsEnabled = false;
+                btnUpdateCompany.IsEnabled = false;
+                btnDeleteGame.IsEnabled = true;
+                btnUpdateGame.IsEnabled = true;
+
+            }
+        }
+
+        private void CleartxtBox()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (tblComapnies.SelectedIndex == -1)
+                {
+                    txtCompanyID.Text = "";
+                    txtCompanyName.Text = "";
+                    txtEstablished.Text = "";
+                }
+                else if (tblGames.SelectedIndex == -1)
+                {
+                    txtFKCompanyID.Text = "";
+                    txtGameID.Text = "";
+                    txtGameName.Text = "";
+                    txtGenre.Text = "";
+                }
+            });
+        }
     }
 }
