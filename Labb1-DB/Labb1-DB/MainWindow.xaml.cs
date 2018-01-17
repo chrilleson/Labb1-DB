@@ -36,6 +36,7 @@ namespace Labb1_DB
             InsertCompaniesToBox();
         }
 
+        //Retrives data from the DB and inserts it to the listbox
         private void InsertCompaniesToBox()
         {
             Task.Run(() =>
@@ -62,7 +63,7 @@ namespace Labb1_DB
                         {
                             int companyid = reader.GetInt32(0);
                             string companyname = reader.GetString(1);
-                            int established = reader.GetInt32(2);
+                            string established = reader.GetString(2);
 
                             Dispatcher.Invoke(() =>
                             {
@@ -88,21 +89,23 @@ namespace Labb1_DB
             });
         }
 
-        private void InsertGameToBox(int companyid)
+        //Retrives data from the Games DB and inserts it to the listbox
+        private void InsertGameToBox(int id)
         {
-            this.CompanyID = companyid;
+            this.CompanyID = id;
             Task.Run(() =>
             {
-                int comid = companyid;
+                int comid = id;
                 using (SqlConnection conn = new SqlConnection(sqlconn))
                 {
                     try
                     {
                         conn.Open();
-                        string query = "SELECT * FROM Games INNER JOIN ON Companies.CompanyID = Games.CompanyID WHERE CompanyID = @companyID";
+                        string query = "SELECT * FROM Games INNER JOIN Companies ON " +
+                        "Companies.CompanyID = Games.Id WHERE Id = @companyID";
                         SqlCommand command = new SqlCommand(query, conn);
                         SqlDataReader reader;
-                        command.Parameters.AddWithValue("@companyid", companyid);
+                        command.Parameters.AddWithValue("@companyID", id);
                         reader = command.ExecuteReader();
 
                         Dispatcher.Invoke(() =>
@@ -110,11 +113,11 @@ namespace Labb1_DB
                             tblGames.Items.Clear();
                             while (reader.Read())
                             {
-                                int id = reader.GetInt32(0);
+                                int gameid = reader.GetInt32(0);
                                 string gameName = reader.GetString(1);
-                                int companyId = reader.GetInt32(2);
+                                int company = reader.GetInt32(2);
                                 string genre = reader.GetString(3);
-                                tblGames.Items.Add(new Games(id, companyid, gameName, genre));
+                                tblGames.Items.Add(new Games(gameid, id, gameName, genre));
                             }
                         });
                     }
@@ -130,6 +133,7 @@ namespace Labb1_DB
             });
         }
 
+        //Method to write out the DB values of the selected Company in the textboxes
         private void InsertCompanyToTbl()
         {
             if (tblComapnies.SelectedIndex >= 0)
@@ -140,26 +144,27 @@ namespace Labb1_DB
                 {
                     txtCompanyID.Text = (c).CompanyId.ToString();
                     txtCompanyName.Text = (c).CompanyName;
-                    txtEstablished.Text = (c).Established.ToString();
+                    txtEstablished.Text = (c).Established;
                 });
             }
         }
 
+        //Method to write out the DB values of the selected Game in the textboxes
         private void InsertGameToTbl()
         {
             if (tblGames.SelectedIndex >= 0)
             {
-                Dispatcher.Invoke(() =>
+                Dispatcher.Invoke((Action)(() =>
                 {
-                    txtGameID.Text = ((Games)tblGames.SelectedItem).Id.ToString();
+                    txtGameID.Text = ((Games)tblGames.SelectedItem).GameID.ToString();
                     txtGameName.Text = ((Games)tblGames.SelectedItem).GameName;
                     txtGenre.Text = ((Games)tblGames.SelectedItem).Genre;
-                    txtFKCompanyID.Text = ((Games)tblGames.SelectedItem).CompanyID.ToString();
-                });
+                    txtFKCompanyID.Text = ((Games)tblGames.SelectedItem).Id.ToString();
+                }));
             }
         }
 
-
+        //
         private void buttonUnavalibale()
         {
             btnAddCompany.IsEnabled = false;
@@ -171,6 +176,7 @@ namespace Labb1_DB
             btnClearAll.IsEnabled = false;
         }
 
+        //Diffrent button clicks for the company
         private void btnAddCompany_Click(object sender, RoutedEventArgs e)
         {
             Task.Run(() =>
@@ -198,6 +204,7 @@ namespace Labb1_DB
                     {
                         conn.Close();
                         InsertCompaniesToBox();
+                        CleartxtBox();
                     }
                 }
             });
@@ -284,6 +291,7 @@ namespace Labb1_DB
 
         }
 
+        //Diffrent button clicks for the game
         private void btnAddGame_Click(object sender, RoutedEventArgs e)
         {
             Task.Run(() =>
@@ -293,7 +301,7 @@ namespace Labb1_DB
                     try
                     {
                         conn.Open();
-                        string query = "INSERT INTO Games (GameName, Genre, CompanyID) VALUES (@Gamename, @genre, @companyid)";
+                        string query = "INSERT INTO Games (GameName, Genre, id) VALUES (@Gamename, @genre, @companyid)";
                         SqlCommand command = new SqlCommand(query, conn);
                         Dispatcher.Invoke(() =>
                         {
@@ -332,14 +340,14 @@ namespace Labb1_DB
                     try
                     {
                         connection.Open();
-                        string query = "UPDATE Gaems SET GameName = @gamename, Genre = @genre, CompanyID = @companyid WHERE Id = @id";
+                        string query = "UPDATE Games SET GameName = @gamename, Genre = @genre, id = @id WHERE GameID = @gameid";
                         SqlCommand command = new SqlCommand(query, connection);
                         Dispatcher.Invoke(() =>
                         {
                             command.Parameters.AddWithValue("@gamename", this.txtGameName.Text);
                             command.Parameters.AddWithValue("@genre", this.txtGenre.Text);
-                            command.Parameters.AddWithValue("@companyid", this.txtFKCompanyID.Text);
-                            command.Parameters.AddWithValue("@id", GameID);
+                            command.Parameters.AddWithValue("@id", this.txtFKCompanyID.Text);
+                            command.Parameters.AddWithValue("@gameid", GameID);
                         });
                         command.ExecuteNonQuery();
                         MessageBox.Show("Game is updated.");
@@ -372,7 +380,7 @@ namespace Labb1_DB
                     try
                     {
                         connection.Open();
-                        string query = "DELETE FROM Games WHERE Id = @id";
+                        string query = "DELETE FROM Games WHERE GameID = @id";
                         SqlCommand command = new SqlCommand(query, connection);
                         Dispatcher.Invoke(() =>
                         {
@@ -399,6 +407,7 @@ namespace Labb1_DB
             });
         }
 
+        //Clear the textboxes from text
         private void btnClearAll_Click(object sender, RoutedEventArgs e)
         {
             Dispatcher.Invoke(() =>
@@ -422,8 +431,9 @@ namespace Labb1_DB
                 InsertCompaniesToBox();
                 CleartxtBox();
             }
-
-            if(tblComapnies.SelectedIndex != -1)
+            
+            // Buttons get enabled/disabled depending on selections in listboxes
+            if (tblComapnies.SelectedIndex != -1)
             {
                 btnDeleteCompany.IsEnabled = true;
                 btnUpdateCompany.IsEnabled = true;
@@ -436,7 +446,9 @@ namespace Labb1_DB
         {
             InsertGameToTbl();
             CleartxtBox();
-            if(tblGames.SelectedIndex != -1)
+            
+            // Buttons get enabled/disabled depending on selections in listboxes
+            if (tblGames.SelectedIndex != -1)
             {
                 btnDeleteCompany.IsEnabled = false;
                 btnUpdateCompany.IsEnabled = false;
