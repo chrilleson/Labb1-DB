@@ -13,7 +13,7 @@
         </Grid.ColumnDefinitions>
         <ListBox x:Name="tblComapnies" Height="153" Margin="10,38,157,0" VerticalAlignment="Top"  Grid.ColumnSpan="2" SelectionChanged="tblComapnies_SelectionChanged" DisplayMemberPath="CompanyName"/>
         <ListBox x:Name="tblGames" HorizontalAlignment="Left" Height="153" Margin="83,38,0,0" VerticalAlignment="Top" Width="100" Grid.Column="1" SelectionChanged="tblGames_SelectionChanged" DisplayMemberPath="GameName"/>
-        <TextBox x:Name="txtCompanyID" Height="19" Margin="10,229,157,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2" IsReadOnly="True"
+        <TextBox x:Name="txtCompanyID" Height="19" Margin="10,229,157,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2"
                  Background="#FFEEEEEE"/>
         <TextBox x:Name="txtFKCompanyID" HorizontalAlignment="Left" Height="19" Margin="83,388,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Grid.Column="1"/>
         <Button x:Name="btnAddCompany" Content="Add" Margin="10,417,182,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Click="btnAddCompany_Click"/>
@@ -33,7 +33,7 @@
         <TextBox x:Name="txtEstablished" Height="20" Margin="10,338,157,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
         <TextBox x:Name="txtGenre" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="83,338,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" />
         <Label x:Name="lblGameID" Content="GameID" Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="83,199,0,0" VerticalAlignment="Top" Width="100"/>
-        <TextBox x:Name="txtGameID" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="83,229,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" IsReadOnly="True" Background="#FFEEEEEE"/>
+        <TextBox x:Name="txtGameID" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="83,229,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Background="#FFEEEEEE"/>
         <Button x:Name="btnUpdateCompany" Content="Update" Height="20" Margin="10,447,182,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Click="btnUpdateCompany_Click"/>
         <Button x:Name="btnUpdateGame" Content="Update" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="83,447,0,0" VerticalAlignment="Top" Width="75" Click="btnUpdateGame_Click"/>
         <Button x:Name="btnClearAll" Grid.ColumnSpan="2" Content="Clear All" HorizontalAlignment="Left" Height="23" Margin="10,502,0,0" VerticalAlignment="Top" Width="213" Click="btnClearAll_Click"/>

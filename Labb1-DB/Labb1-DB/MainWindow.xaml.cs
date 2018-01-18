@@ -33,11 +33,11 @@ namespace Labb1_DB
         public MainWindow()
         {
             InitializeComponent();
-            InsertCompaniesToBox();
+            InsertCompaniesToListBox();
         }
 
         //Retrives data from the DB and inserts it to the listbox
-        private void InsertCompaniesToBox()
+        private void InsertCompaniesToListBox()
         {
             Task.Run(() =>
             {
@@ -90,7 +90,7 @@ namespace Labb1_DB
         }
 
         //Retrives data from the Games DB and inserts it to the listbox
-        private void InsertGameToBox(int id)
+        private void InsertGameToListBox(int id)
         {
             this.CompanyID = id;
             Task.Run(() =>
@@ -134,7 +134,7 @@ namespace Labb1_DB
         }
 
         //Method to write out the DB values of the selected Company in the textboxes
-        private void InsertCompanyToTbl()
+        private void InsertCompanyTotxtBox()
         {
             if (tblComapnies.SelectedIndex >= 0)
             {
@@ -150,17 +150,17 @@ namespace Labb1_DB
         }
 
         //Method to write out the DB values of the selected Game in the textboxes
-        private void InsertGameToTbl()
+        private void InsertGameTotxtBox()
         {
             if (tblGames.SelectedIndex >= 0)
             {
-                Dispatcher.Invoke((Action)(() =>
+                Dispatcher.Invoke(() =>
                 {
                     txtGameID.Text = ((Games)tblGames.SelectedItem).GameID.ToString();
                     txtGameName.Text = ((Games)tblGames.SelectedItem).GameName;
                     txtGenre.Text = ((Games)tblGames.SelectedItem).Genre;
                     txtFKCompanyID.Text = ((Games)tblGames.SelectedItem).Id.ToString();
-                }));
+                });
             }
         }
 
@@ -186,12 +186,13 @@ namespace Labb1_DB
                     try
                     {
                         conn.Open();
-                        string query = "INSERT INTO Companies (CompanyName, Established) VALUES (@Companyname, @established)";
+                        string query = "INSERT INTO Companies (CompanyName, Established, CompanyID) VALUES (@Companyname, @established, @companyid)";
                         SqlCommand command = new SqlCommand(query, conn);
                         Dispatcher.Invoke(() =>
                         {
                             command.Parameters.AddWithValue("@Companyname", this.txtCompanyName.Text);
                             command.Parameters.AddWithValue("@established", this.txtEstablished.Text);
+                            command.Parameters.AddWithValue("@companyid", this.txtCompanyID.Text);
                         });
                         command.ExecuteNonQuery();
                         MessageBox.Show("New Company has been saved!");
@@ -203,7 +204,7 @@ namespace Labb1_DB
                     finally
                     {
                         conn.Close();
-                        InsertCompaniesToBox();
+                        InsertCompaniesToListBox();
                         CleartxtBox();
                     }
                 }
@@ -242,7 +243,7 @@ namespace Labb1_DB
                         {
                             tblComapnies.Items.Clear();
                         });
-                        InsertCompaniesToBox();
+                        InsertCompaniesToListBox();
                     }
                 }
             });
@@ -280,7 +281,7 @@ namespace Labb1_DB
                     finally
                     {
                         connection.Close();
-                        InsertCompaniesToBox();
+                        InsertCompaniesToListBox();
                         Dispatcher.Invoke(() =>
                         {
                             tblComapnies.Items.Clear();
@@ -301,13 +302,14 @@ namespace Labb1_DB
                     try
                     {
                         conn.Open();
-                        string query = "INSERT INTO Games (GameName, Genre, id) VALUES (@Gamename, @genre, @companyid)";
+                        string query = "INSERT INTO Games (GameName, Genre, Id, GameID) VALUES (@Gamename, @genre, @companyid, @gameid)";
                         SqlCommand command = new SqlCommand(query, conn);
                         Dispatcher.Invoke(() =>
                         {
                             command.Parameters.AddWithValue("@Gamename", this.txtGameName.Text);
                             command.Parameters.AddWithValue("@genre", this.txtGenre.Text);
                             command.Parameters.AddWithValue("@companyid", this.txtFKCompanyID.Text);
+                            command.Parameters.AddWithValue("@gameid", this.txtGameID.Text);
                         });
                         command.ExecuteNonQuery();
                         MessageBox.Show("New Game has been saved!");
@@ -323,7 +325,7 @@ namespace Labb1_DB
                     finally
                     {
                         conn.Close();
-                        InsertGameToBox(SelectedCompany);
+                        InsertGameToListBox(SelectedCompany);
                         CleartxtBox();
                     }
                 }
@@ -363,7 +365,7 @@ namespace Labb1_DB
                     finally
                     {
                         connection.Close();
-                        InsertGameToBox(SelectedCompany);
+                        InsertGameToListBox(SelectedCompany);
                         CleartxtBox();
                     }
                 }
@@ -400,7 +402,7 @@ namespace Labb1_DB
                     finally
                     {
                         connection.Close();
-                        InsertGameToBox(SelectedCompany);
+                        InsertGameToListBox(SelectedCompany);
                         CleartxtBox();
                     }
                 }
@@ -427,8 +429,8 @@ namespace Labb1_DB
             if(tblComapnies.SelectedIndex >= 0)
             {
                 SelectedCompany = ((Companies)tblComapnies.SelectedItem).CompanyId;
-                InsertGameToBox(SelectedCompany);
-                InsertCompaniesToBox();
+                InsertGameToListBox(SelectedCompany);
+                InsertCompanyTotxtBox();
                 CleartxtBox();
             }
             
@@ -444,7 +446,7 @@ namespace Labb1_DB
 
         private void tblGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InsertGameToTbl();
+            InsertGameTotxtBox();
             CleartxtBox();
             
             // Buttons get enabled/disabled depending on selections in listboxes
