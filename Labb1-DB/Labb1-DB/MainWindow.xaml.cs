@@ -221,7 +221,7 @@ namespace Labb1_DB
                     try
                     {
                         connection.Open();
-                        string query = "UPDATE Companies SET CompanyName = @companyname, Established = @established, WHERE CompanyID = @id";
+                        string query = "UPDATE Companies SET CompanyName = @companyname, Established = @established WHERE CompanyID = @id";
                         SqlCommand command = new SqlCommand(query, connection);
                         Dispatcher.Invoke(() =>
                         {
